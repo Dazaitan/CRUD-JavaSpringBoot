@@ -13,7 +13,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/transactions")
 public class TransactionController {
-    @Autowired //
+    @Autowired
     private TransactionRepository transactionRepository;
 
     @GetMapping
@@ -23,12 +23,9 @@ public class TransactionController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Transaction> getTransactionById(@PathVariable Long id) {
-        return transactionRepository.findById(id)
-                //validar si el optional que devuelve esta vacio o no
-                .map(transaction -> new ResponseEntity<>(transaction, HttpStatus.OK))
-                //Si el optional contiene TODOS los items de la transaccion retorna el ResponseEntity o respuesta HTTP
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-                //Si el Optional está vacío (es decir, no se encontró la transacción), devuelve una ResponseEntity con estado HttpStatus.NOT_FOUND.
+        Transaction transaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No se ha encontrado ninguna transacción con el ID especificado"));
+        return new ResponseEntity<>(transaction, HttpStatus.OK);
     }
 
     @PostMapping
@@ -50,7 +47,7 @@ public class TransactionController {
             transactionRepository.save(updatedTransaction);
             return ResponseEntity.ok(updatedTransaction);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("La transaccion que intenta actualizar no esta creada en la base de datos");
         }
     }
 
@@ -66,20 +63,19 @@ public class TransactionController {
     @GetMapping("/by-category/{category}")
     public ResponseEntity<List<Transaction>> getTransactionByCategory(@PathVariable String category){
         List<Transaction> transactions =  transactionRepository.findByCategory(category);
+        if (transactions.isEmpty()) { // Si no se encuentran transacciones, lanzar una excepción personalizada
+            throw new ResourceNotFoundException("No se ha encontrado ninguna transacción para la categoría especificada");
+        }
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
     @GetMapping("/by-date")
-    public ResponseEntity<List<Transaction>> getTransactionsByDate(
+    public ResponseEntity<?> getTransactionsByDate(
             @RequestParam("start_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
             @RequestParam("end_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
         List<Transaction> transactions = transactionRepository.findByDateBetween(startDate, endDate);
         if (transactions.isEmpty()) {
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("message", "No se ha encontrado ninguna transacción en el rango especificado");
-            errorResponse.put("timestamp", new Date());
-            errorResponse.put("status", HttpStatus.NOT_FOUND.value());
-            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("No se ha encontrado ninguna transacción en el rango especificado");
         }
-        return new ResponseEntity<>(transactions, HttpStatus.OK);
+        return new ResponseEntity<>(transactions,HttpStatus.OK);
     }
 }
