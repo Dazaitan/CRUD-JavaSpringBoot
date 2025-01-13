@@ -52,12 +52,14 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTransaction(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Boolean>> deleteTransaction(@PathVariable Long id) {
         if (transactionRepository.existsById(id)) {
             transactionRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            Map<String, Boolean> response = new HashMap<>();
+            response.put("deleted", true);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Id no encontrado");
         }
     }
     @GetMapping("/by-category/{category}")
