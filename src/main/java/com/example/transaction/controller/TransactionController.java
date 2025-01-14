@@ -1,5 +1,6 @@
 package com.example.transaction.controller;
 
+import com.example.transaction.modelo.FinancialSummary;
 import com.example.transaction.modelo.Transaction;
 import com.example.transaction.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -79,5 +82,19 @@ public class TransactionController {
             throw new ResourceNotFoundException("No se ha encontrado ninguna transacción en el rango especificado");
         }
         return new ResponseEntity<>(transactions,HttpStatus.OK);
+    }
+    @GetMapping("/summary")
+    public FinancialSummary getFinancialSummary(
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end) {
+        List<Transaction> transactions = transactionRepository.findByDateBetween(start, end);
+        BigDecimal totalIncome = transactions.stream()
+                .filter(t -> t.getType() == Transaction.Type.Income)
+                .map(Transaction::getAmount) .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalExpenses = transactions.stream()
+                .filter(t -> t.getType() == Transaction.Type.Expense)
+                .map(Transaction::getAmount) .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal netBalance = totalIncome.subtract(totalExpenses);
+        return new FinancialSummary(totalIncome, totalExpenses, netBalance);
     }
 }
