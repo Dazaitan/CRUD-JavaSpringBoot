@@ -1,0 +1,172 @@
+{
+	"info": {
+		"_postman_id": "c61961e1-1292-499b-a901-818c4183d985",
+		"name": "CRUD - Transaction - JAVASpring",
+		"description": "API permite a los usuarios realizar operaciones CRUD sobre una base de datos de transacciones.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "40951832"
+	},
+	"item": [
+		{
+			"name": "Eliminar transaccion",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/transactions/{id}",
+				"description": "Este punto final envía una solicitud HTTP DELETE al servidor para eliminar una transacción específica identificada por el ID proporcionado en la URL.\n\n**Solicitud**\n\n- Metodo: DELETE\n    \n- URL: [http://localhost:8080/transactions/{id}](http://localhost:8080/transactions/{id})\n    \n- Id: identificador de la transaccion a eliminar\n    \n\n**Respuesta**\n\nLa respuesta de esta solicitud es un esquema JSON que representa la estructura de los datos de respuesta. El esquema describirá el estado de la solicitud.\n\nEjemplo\n\n- Metodo: DELETE\n    \n- URL: [http://localhost:8080/transactions/3](http://localhost:8080/transactions/3)\n    \n- Id=3\n    \n\nRespuesta\n\nSi la eliminacion fue correcta\n\n{  \n\"deleted\": true  \n}\n\nSi no se pudo eliminar debido a que no se encontro el ID especificado.\n\n{\n\n\"message\": \"Id no encontrado\",\n\n\"timestamp\": \"2025-01-13T01:29:31.885+00:00\", \"status\": 404\n\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener detalles de transaccion",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/transactions/{id}",
+				"description": "Endpoint donde se utiliza el metodo **GET** para la obtencion de detalles de una transaccion segun el ID.\n\npara utilizarlo se referencia a la URL [http://localhost:8080/transactions/{id}](http://localhost:8080/transactions/{id}) especificando el ID de la transaccion.\n\n**Cuerpo de la solicitud**\n\n- Metodo: GET\n    \n- URL: [http://localhost:8080/transactions/{id}](http://localhost:8080/transactions/{id})\n    \n- Id: identificador de la transaccion a consultar.\n    \n\nRespuesta\n\nLa respuesta si el ID de la transaccion especificada existe va devolver en un esquema JSON los detalles de la transaccion. Y si no existe va retornar un esquema JSON con los detalles de la solicitud; _**message, timestamp y status.**_\n\nPor ejemplo:\n\n[http://localhost:8080/transactions/1](http://localhost:8080/transactions/1)\n\nDonde se van a obtener en un esquema JSON los detalles de la transaccion donde el ID sea igual a 1.\n\n``` json\n{\"id\":1,\n\"type\":\"Expense\",\"amount\":500.00,\"category\":\"Rent\",\"date\":\"2025-01-10\",\"description\":\"Monthly Rent\"}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener todas las transacciones",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/transactions",
+				"description": "Endpoint de metodo **GET** para la obtencion de todas las transacciones que estan en la base de datos.\n\nSe accede a el a traves de la URL [http://localhost:8080/transactions](http://localhost:8080/transactions)\n\n**Cuerpo de la solicitud**\n\n- Metodo: GET\n    \n- URL:\n    \n\nRespuesta\n\nEn un esquema JSON se van a retornar los detalles de todas las transacciones en la base de datos.\n\npor ejemplo\n\n``` json\n[{\"id\":1,\"type\":\"Expense\",\"amount\":500.00,\"category\":\"Rent\",\"date\":\"2025-01-10\",\"description\":\"Monthly Rent\"},{\"id\":4,\"type\":\"Expense\",\"amount\":500.00,\"category\":\"Rent\",\"date\":\"2025-01-10\",\"description\":\"Monthly Rent\"}]\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener transacciones por categoria",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/transactions/by-category/{category}",
+				"description": "Esta solicitud HTTP GET recupera una lista de transacciones filtradas por la categoría definida en la URL del servidor.\n\n#### Solicitud:\n\n- Metodo: GET\n    \n- URL: [http://localhost:8080/transactions/by-category/{category}](http://localhost:8080/transactions/by-category/{category})\n    \n- category: categoria a consultar.\n    \n\nRespuesta\n\nEn un esquema JSON va retornar los detalles de las transacciones correspondientes a la categoria especificada.\n\n#### Ejemplo\n\n[http://localhost:8080/transactions/by-category/Rent](http://localhost:8080/transactions/by-category/{category})\n\nLa respuesta incluirá una lista de transacciones filtradas por la categoría \"Rent\".\n\n``` json\n[{\"id\":1,\"type\":\"Expense\",\"amount\":500.00,\"category\":\"Rent\",\"date\":\"2025-01-10\",\"description\":\"Monthly Rent\"},{\"id\":4,\"type\":\"Expense\",\"amount\":500.00,\"category\":\"Rent\",\"date\":\"2025-01-10\",\"description\":\"Monthly Rent\"},{\"id\":7,\"type\":\"Expense\",\"amount\":500.00,\"category\":\"Rent\",\"date\":\"2025-01-10\",\"description\":\"Monthly Rent\"}]\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar transaccion",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"type\":\"Expense\",\"amount\":500.00,\"category\":\"Rent\",\"date\":\"2025-01-11\",\"description\":\"Monthly Rent\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/transactions/{id}",
+				"description": "Este punto final le permite actualizar una transacción específica por su ID mediante una solicitud HTTP **PUT**.\n\nLa solicitud debe incluir el **ID** de la transacción en la ruta **URL** y una carga útil **JSON** en el cuerpo de la solicitud con los detalles de la transacción actualizada.\n\n**Solicitud**\n\n- Metodo: PUT\n    \n- URL: [http://localhost:8080/transactions/{id}](http://localhost:8080/transactions/{id})\n    \n- Id: identificador de la transaccion a modificar\n    \n\n**Cuerpo de la solicitud**\n\n- type (string): El tipo de transacción (p. ej., Gastos, Ingresos).\n    \n- amount (number): El monto de la transacción.\n    \n- category (string): La categoría a la que pertenece la transacción.\n    \n- date (string): La fecha de la transacción en el formato AAAA-MM-DD.\n    \n- description (string): Una descripción de la transacción.\n    \n\nRespuesta  \nLa respuesta incluirá los detalles actualizados de la transacción después de que la solicitud PUT se procese correctamente."
+			},
+			"response": []
+		},
+		{
+			"name": "Crear transaccion",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"type\":\"Expense\",\"amount\":500.00,\"category\":\"Rent\",\"date\":\"2025-01-11\",\"description\":\"Monthly Rent\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/transactions",
+				"description": "Crear transacción  \nEste punto final le permite crear una nueva transacción.\n\nCuerpo de la solicitud\n\n- Metodo: POST\n    \n- type (string, required): el tipo de transacción.\n    \n- amount (number, required): el monto de la transacción.\n    \n- category (string, required): la categoría de la transacción.\n    \n- date (string, required): la fecha de la transacción.\n    \n- description (string, required): la descripción de la transacción.\n    \n\nEjemplo:\n\n``` json\n{\n  \"type\": \"Expense\",\n  \"amount\": 500,\n  \"category\": \"Rent\",\n  \"date\": \"2025-01-11\",\n  \"description\": \"Monthly Rent\"\n}\n\n ```\n\n#### Respuesta (JSON)\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"id\": {\n      \"type\": \"number\"\n    },\n    \"type\": {\n      \"type\": \"string\"\n    },\n    \"amount\": {\n      \"type\": \"number\"\n    },\n    \"category\": {\n      \"type\": \"string\"\n    },\n    \"date\": {\n      \"type\": \"string\"\n    },\n    \"description\": {\n      \"type\": \"string\"\n    }\n  }\n}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener transaccion en rango de fecha",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/transactions/by-date?start_date={start_date}&end_date={end_date}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions",
+						"by-date"
+					],
+					"query": [
+						{
+							"key": "start_date",
+							"value": "{start_date}"
+						},
+						{
+							"key": "end_date",
+							"value": "{end_date}"
+						}
+					]
+				},
+				"description": "Este Endpoint realiza una solicitud HTTP GET para recuperar transacciones dentro de un rango de fechas especificado. La solicitud debe incluir los parámetros de consulta 'start_date' y 'end_date' para especificar las fechas de inicio y finalización de las transacciones que tienen que ser ingresadas en el formato ISO 8601 (YYYY-MM-DD).\n\n#### Solicitud\n\n- Metodo GET\n    \n- URL: [http://localhost:8080/transactions/by-date?start_date={start_date}&amp;end_date={end_date}](http://localhost:8080/transactions/by-date?start_date={start_date}&end_date={end_date})\n    \n\n#### Parámetros de la solicitud\n\n- `start_date` (string): La fecha de inicio de la búsqueda de transacciones en formato \"YYYY-MM-DD\".\n    \n- `end_date` (string): La fecha final para la búsqueda de transacciones en formato \"YYYY-MM-DD\".\n    \n\n### Respuesta si no se encuentran transacciones\n\nLa última ejecución de esta solicitud devolvió un código de estado de 404 con un cuerpo de respuesta JSON que contiene los siguientes campos:\n\n- `timestamp` (string): La marca de tiempo del error.\n    \n- `status` (integer): El código de estado del error.\n    \n- `message` (string): Descripcion del error.\n    \n\nLa respuesta está en formato JSON con el tipo de contenido establecido en 'application/json'.\n\n### Respuesta si se encuentran transacciones\n\nEn un esquema JSON retornara los detalles de todas las transacciones dentro del rango especificado.\n\n#### Ejemplo\n\n[http://localhost:8080/transactions/by-date?start_date=2025-01-01&amp;end_date=2025-01-28](http://localhost:8080/transactions/by-date?start_date=2025-02-01&end_date=2025-02-28)\n\n``` json\n[{\"id\":1,\"type\":\"Expense\",\"amount\":500.00,\"category\":\"Rent\",\"date\":\"2025-01-10\",\"description\":\"Monthly Rent\"},{\"id\":4,\"type\":\"Expense\",\"amount\":500.00,\"category\":\"Rent\",\"date\":\"2025-01-10\",\"description\":\"Monthly Rent\"},{\"id\":7,\"type\":\"Expense\",\"amount\":500.00,\"category\":\"Rent\",\"date\":\"2025-01-10\",\"description\":\"Monthly Rent\"}]\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener informe en rango de fecha",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/transactions/summary?startDate={YYYY-MM-DD}&endDate={YYYY-MM-DD}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions",
+						"summary"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "{YYYY-MM-DD}"
+						},
+						{
+							"key": "endDate",
+							"value": "{YYYY-MM-DD}"
+						}
+					]
+				},
+				"description": "### GET /transactions/summary\n\nEste EndPoint recupera un resumen de las transacciones dentro de un rango de fechas específico.\n\n#### Solicitud\n\n- Parametros\n    \n    - startDate (string, requerido): La fecha de inicio del período de resumen de la transacción en el formato YYYY-MM-DD.\n        \n    - endDate (string, requerido): La fecha de finalización del período de resumen de la transacción en el formato YYYY-MM-DD.\n        \n\n#### Respuesta\n\nLa respuesta a esta solicitud es un objeto JSON con el siguiente esquema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"totalIncome\": {\n            \"type\": \"number\"\n        },\n        \"totalExpenses\": {\n            \"type\": \"number\"\n        },\n        \"netBalance\": {\n            \"type\": \"number\"\n        }\n    }\n}\n\n ```\n\n- totalIncome (number): Los ingresos totales dentro del rango de fechas especificado.\n    \n- totalExpenses (number): Los gastos totales dentro del rango de fechas especificado.\n    \n- netBalance (number): El saldo neto (ingresos totales - gastos totales) dentro del rango de fechas especificado."
+			},
+			"response": []
+		}
+	]
+}
