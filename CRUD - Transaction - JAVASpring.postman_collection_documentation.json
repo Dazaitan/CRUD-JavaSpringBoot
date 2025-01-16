@@ -167,6 +167,19 @@
 				"description": "### GET /transactions/summary\n\nEste EndPoint recupera un resumen de las transacciones dentro de un rango de fechas específico.\n\n#### Solicitud\n\n- Parametros\n    \n    - startDate (string, requerido): La fecha de inicio del período de resumen de la transacción en el formato YYYY-MM-DD.\n        \n    - endDate (string, requerido): La fecha de finalización del período de resumen de la transacción en el formato YYYY-MM-DD.\n        \n\n#### Respuesta\n\nLa respuesta a esta solicitud es un objeto JSON con el siguiente esquema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"totalIncome\": {\n            \"type\": \"number\"\n        },\n        \"totalExpenses\": {\n            \"type\": \"number\"\n        },\n        \"netBalance\": {\n            \"type\": \"number\"\n        }\n    }\n}\n\n ```\n\n- totalIncome (number): Los ingresos totales dentro del rango de fechas especificado.\n    \n- totalExpenses (number): Los gastos totales dentro del rango de fechas especificado.\n    \n- netBalance (number): El saldo neto (ingresos totales - gastos totales) dentro del rango de fechas especificado."
 			},
 			"response": []
+		},
+		{
+			"name": "Obtener categorias",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/transactions/categories",
+				"description": "Este punto final realiza una solicitud HTTP GET para recuperar la lista de categorías de transacciones. La solicitud no incluye un cuerpo de solicitud y la respuesta es una **matriz** JSON que contiene las categorías de transacciones.\n\nEjemplo de Respuesta:\n\n``` json\n[\"category1\", \"category2\", \"category3\"]\n\n ```"
+			},
+			"response": []
 		}
 	]
 }

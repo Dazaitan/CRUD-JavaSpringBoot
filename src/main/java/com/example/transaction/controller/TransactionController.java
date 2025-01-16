@@ -8,9 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -96,5 +94,14 @@ public class TransactionController {
                 .map(Transaction::getAmount) .reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal netBalance = totalIncome.subtract(totalExpenses);
         return new FinancialSummary(totalIncome, totalExpenses, netBalance);
+    }
+    @GetMapping("/categories")
+    public ResponseEntity<List<String>> getCategories() {
+        List<String> categories = transactionRepository.findDistinctCategories();
+        if (categories == null || categories.isEmpty()){
+            throw new ResourceNotFoundException("No se ha encontrado ninguna categoria listada");
+        } else {
+            return new ResponseEntity<>(categories, HttpStatus.OK);
+        }
     }
 }
